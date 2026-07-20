@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Studio Interlude 01 — one sunrise, two reference frames, and the design choice behind every interface.">
+  <meta name="author" content="Takaaki Suzuki">
+  <meta name="color-scheme" content="light">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Where the Viewer Stands · Studio Interlude 01">
+  <meta property="og:description" content="Same event. Different frame. Every interface chooses where the viewer stands.">
+  <meta property="og:url" content="https://ihatovremains.github.io/studio-interlude-01-sunrise/">
+  <meta property="og:image" content="og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Where the Viewer Stands · Studio Interlude 01">
+  <meta name="twitter:description" content="Same event. Different frame. Every interface chooses where the viewer stands.">
+  <meta name="twitter:image" content="og-cover.jpg">
+  <title>Where the Viewer Stands · Studio Interlude 01</title>
+  <script>
+    if (new URLSearchParams(location.search).has("capture")) {
+      document.documentElement.classList.add("capture");
+    }
+  </script>
+  <style>
+    :root {
+      --background: #f8fbfd;
+      --foreground: #17212a;
+      --card: #edf3f7;
+      --card-foreground: #17212a;
+      --muted: #d9e4ec;
+      --muted-foreground: #6f7f8c;
+      --primary: #17212a;
+      --primary-foreground: #f8fbfd;
+      --secondary: #e9f0f5;
+      --secondary-foreground: #17212a;
+      --accent: #eaf2f8;
+      --accent-foreground: #17212a;
+      --border: #c8d4dc;
+      --input: #b8c7d1;
+      --ring: #4a8fcf;
+      --viz-series-1: #4f92d1;
+      --viz-series-2: #f29a50;
+      --viz-series-3: #65a890;
+      --viz-series-4: #8978c9;
+      --viz-series-5: #ca6b62;
+      --viz-series-6: #7f91a5;
+      --font-size-base: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background: #e7edf2;
+      color: var(--foreground);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif;
+    }
+    h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: -.025em;
+    }
+    button, input { font: inherit; }
+    .viz-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 14px;
+      color: var(--foreground);
+    }
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--background);
+      color: var(--foreground);
+      padding: 9px 14px;
+      cursor: pointer;
+    }
+    .form-label { color: var(--muted-foreground); }
+    .form-range { accent-color: var(--primary); }
+    .text-small { font-size: var(--font-size-base); }
+    .text-muted { color: var(--muted-foreground); }
+    #viewer-frame-production-study .vfs-stage {
+      box-shadow: 0 24px 70px rgba(34, 52, 65, .14);
+    }
+    html.capture body {
+      width: 100vw;
+      height: 100vh;
+      min-height: 0;
+      padding: 0;
+      overflow: hidden;
+      background: var(--background);
+    }
+    html.capture #viewer-frame-production-study .vfs-stage {
+      width: 100vw;
+      height: 100vh;
+      aspect-ratio: auto;
+      box-shadow: none;
+    }
+    html.capture #viewer-frame-production-study .viz-controls { display: none; }
+    html.capture, html.capture * { cursor: none !important; }
+    @media (max-width: 560px) {
+      body { padding: 0; align-items: start; }
+      #viewer-frame-production-study .vfs-stage { width: 100vw; }
+      #viewer-frame-production-study .viz-controls { padding-inline: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div id="viewer-frame-production-study">
+  <div class="vfs-stage" role="img" aria-label="A continuous pullback shows one event through two reference frames: the human view says the Sun rises, while the system view reveals Tokyo rotating into daylight.">
+    <svg viewBox="0 0 800 1000" aria-labelledby="vfs-title vfs-desc">
+      <title id="vfs-title">Where the viewer stands</title>
+      <desc id="vfs-desc">The same sunrise is first shown from Tokyo as an experience, then from space as a causal system. The final message connects reference-frame choice to interface design.</desc>
+      <defs>
+        <linearGradient id="vfs-dawn" x1="0" y1="0" x2="0" y2="1">
+          <stop class="vfs-dawn-a" offset="0%"></stop>
+          <stop class="vfs-dawn-b" offset="62%"></stop>
+          <stop class="vfs-dawn-c" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient id="vfs-sun-fill" cx="42%" cy="40%" r="68%">
+          <stop class="vfs-sun-a" offset="0%"></stop>
+          <stop class="vfs-sun-b" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient id="vfs-earth-fill" x1="0" y1="0" x2="1" y2="0">
+          <stop class="vfs-earth-a" offset="0%"></stop>
+          <stop class="vfs-earth-b" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient id="vfs-day-fill" x1="0" y1="0" x2="1" y2="0">
+          <stop class="vfs-day-a" offset="0%"></stop>
+          <stop class="vfs-day-b" offset="42%"></stop>
+          <stop class="vfs-day-c" offset="100%"></stop>
+        </linearGradient>
+        <filter id="vfs-soft-glow" x="-90%" y="-90%" width="280%" height="280%">
+          <feGaussianBlur stdDeviation="18"></feGaussianBlur>
+        </filter>
+        <filter id="vfs-rim-glow" x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+        </filter>
+        <clipPath id="vfs-earth-clip">
+          <circle cx="0" cy="0" r="254"></circle>
+        </clipPath>
+      </defs>
+
+      <rect class="vfs-dawn" width="800" height="1000"></rect>
+      <rect class="vfs-space" width="800" height="1000" data-space></rect>
+
+      <g class="vfs-stars" data-stars aria-hidden="true">
+        <circle cx="84" cy="164" r="1.6"></circle>
+        <circle cx="166" cy="286" r="1.1"></circle>
+        <circle cx="250" cy="108" r="1.4"></circle>
+        <circle cx="344" cy="208" r="1.2"></circle>
+        <circle cx="438" cy="126" r="1.7"></circle>
+        <circle cx="540" cy="258" r="1.2"></circle>
+        <circle cx="632" cy="118" r="1.4"></circle>
+        <circle cx="744" cy="306" r="1.1"></circle>
+        <circle cx="112" cy="548" r="1.1"></circle>
+        <circle cx="688" cy="594" r="1.5"></circle>
+      </g>
+
+      <g class="vfs-sun-fixed" aria-label="The Sun remains fixed in the frame">
+        <circle class="vfs-sun-glow" cx="705" cy="456" r="100"></circle>
+        <circle class="vfs-sun" cx="705" cy="456" r="52"></circle>
+        <text class="vfs-sun-note" x="676" y="374" data-sun-note>SAME SUN · NEW FRAME</text>
+      </g>
+
+      <g class="vfs-camera-world" data-camera-world>
+        <circle class="vfs-atmosphere-glow" cx="0" cy="0" r="263"></circle>
+        <circle class="vfs-atmosphere" cx="0" cy="0" r="260"></circle>
+        <path class="vfs-sphere" data-sphere></path>
+        <g clip-path="url(#vfs-earth-clip)">
+          <rect class="vfs-night" x="-260" y="-260" width="260" height="520" data-night></rect>
+          <rect class="vfs-day" x="0" y="-260" width="260" height="520" data-day></rect>
+          <path class="vfs-graticule" data-graticule></path>
+          <path class="vfs-tokyo-trail" data-trail></path>
+          <circle class="vfs-tokyo-halo" r="16" data-tokyo-halo></circle>
+          <path class="vfs-tokyo-dot" data-tokyo-dot></path>
+        </g>
+        <path class="vfs-sphere-line" data-sphere-line></path>
+        <path class="vfs-sun-rim" d="M0 -254 A254 254 0 0 1 0 254" data-sun-rim></path>
+        <line class="vfs-terminator" x1="0" y1="-246" x2="0" y2="246" data-terminator></line>
+        <g class="vfs-light-labels" data-light-labels>
+          <text x="-136" y="186">NIGHT</text>
+          <text x="82" y="186">DAYLIGHT</text>
+        </g>
+
+        <g class="vfs-ground-city" data-ground-city transform="translate(0 -254) scale(.1435)">
+          <path d="M-118 0V-31H-96V-54H-72V0M-58 0V-78H-28V-42H-8V0M8 0V-46H28V-95H52V-62H76V0M90 0V-58H116V0"></path>
+          <line x1="-142" y1="0" x2="142" y2="0"></line>
+          <text x="0" y="34">TOKYO</text>
+        </g>
+      </g>
+
+      <g class="vfs-telemetry" data-telemetry>
+        <text x="536" y="596">TOKYO · 35.7°N</text>
+        <text x="536" y="628">≈ 1,350 KM/H EASTWARD</text>
+        <text x="536" y="660">TIME COMPRESSED</text>
+      </g>
+
+      <g class="vfs-crossing" data-crossing>
+        <line x1="0" y1="0" x2="46" y2="-28"></line>
+        <text x="56" y="-31">TOKYO · DAYLIGHT</text>
+      </g>
+
+      <text class="vfs-series" x="56" y="68">STUDIO INTERLUDE · 01</text>
+    </svg>
+
+    <div class="vfs-copy" aria-live="polite">
+      <h2 data-main-copy>The Sun rises.</h2>
+      <p class="text-small" data-sub-copy>HUMAN VIEW · TOKYO</p>
+    </div>
+  </div>
+
+  <div class="viz-controls">
+    <button class="btn" type="button" data-replay>Replay 17 seconds</button>
+    <label class="form-label" for="vfs-scrub">Time <span class="text-muted" data-time>0.0 s</span></label>
+    <input class="form-range" id="vfs-scrub" data-scrub type="range" min="0" max="17" step="0.05" value="0" aria-label="Scrub the seventeen-second reference-frame study">
+  </div>
+</div>
+
+<style>
+  #viewer-frame-production-study {
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    color: var(--foreground);
+  }
+
+  #viewer-frame-production-study .vfs-stage {
+    width: min(100%, 36rem);
+    aspect-ratio: 4 / 5;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #viewer-frame-production-study svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  #viewer-frame-production-study .vfs-dawn { fill: url(#vfs-dawn); }
+  #viewer-frame-production-study .vfs-dawn-a { stop-color: color-mix(in srgb, var(--viz-series-1) 17%, var(--background)); }
+  #viewer-frame-production-study .vfs-dawn-b { stop-color: color-mix(in srgb, var(--viz-series-2) 13%, var(--background)); }
+  #viewer-frame-production-study .vfs-dawn-c { stop-color: color-mix(in srgb, var(--viz-series-2) 25%, var(--background)); }
+  #viewer-frame-production-study .vfs-space {
+    fill: color-mix(in srgb, var(--muted) 74%, var(--background));
+    opacity: 0;
+  }
+  #viewer-frame-production-study .vfs-stars {
+    fill: var(--muted-foreground);
+    opacity: 0;
+  }
+  #viewer-frame-production-study .vfs-sun-a { stop-color: color-mix(in srgb, var(--viz-series-2) 88%, var(--background)); }
+  #viewer-frame-production-study .vfs-sun-b { stop-color: color-mix(in srgb, var(--viz-series-2) 42%, var(--background)); }
+  #viewer-frame-production-study .vfs-sun-glow {
+    fill: color-mix(in srgb, var(--viz-series-2) 24%, transparent);
+    filter: url(#vfs-soft-glow);
+  }
+  #viewer-frame-production-study .vfs-sun { fill: url(#vfs-sun-fill); }
+  #viewer-frame-production-study .vfs-earth-a { stop-color: color-mix(in srgb, var(--muted) 80%, var(--viz-series-1)); }
+  #viewer-frame-production-study .vfs-earth-b { stop-color: color-mix(in srgb, var(--muted) 66%, var(--background)); }
+  #viewer-frame-production-study .vfs-sphere { fill: url(#vfs-earth-fill); }
+  #viewer-frame-production-study .vfs-day-a { stop-color: color-mix(in srgb, var(--viz-series-2) 4%, transparent); }
+  #viewer-frame-production-study .vfs-day-b { stop-color: color-mix(in srgb, var(--viz-series-2) 25%, transparent); }
+  #viewer-frame-production-study .vfs-day-c { stop-color: color-mix(in srgb, var(--viz-series-2) 58%, transparent); }
+  #viewer-frame-production-study .vfs-night { fill: color-mix(in srgb, var(--viz-series-1) 24%, transparent); opacity: 0; }
+  #viewer-frame-production-study .vfs-day { fill: url(#vfs-day-fill); opacity: 0; }
+  #viewer-frame-production-study .vfs-atmosphere-glow {
+    fill: none;
+    stroke: color-mix(in srgb, var(--viz-series-1) 22%, transparent);
+    stroke-width: 12;
+    opacity: .5;
+    filter: url(#vfs-rim-glow);
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-atmosphere {
+    fill: none;
+    stroke: color-mix(in srgb, var(--viz-series-1) 36%, transparent);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-sphere-line {
+    fill: none;
+    stroke: color-mix(in srgb, var(--foreground) 24%, transparent);
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-sun-rim {
+    fill: none;
+    stroke: color-mix(in srgb, var(--viz-series-2) 70%, transparent);
+    stroke-width: 3;
+    opacity: 0;
+    filter: url(#vfs-rim-glow);
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-graticule {
+    fill: none;
+    stroke: color-mix(in srgb, var(--muted-foreground) 42%, transparent);
+    stroke-width: 1.15;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-terminator {
+    stroke: color-mix(in srgb, var(--viz-series-2) 62%, var(--foreground));
+    stroke-width: 1.8;
+    opacity: 0;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-tokyo-trail {
+    fill: none;
+    stroke: var(--viz-series-1);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: .52;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-tokyo-dot {
+    fill: var(--viz-series-1);
+    stroke: var(--background);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-tokyo-dot.is-day { fill: var(--viz-series-2); }
+  #viewer-frame-production-study .vfs-tokyo-halo {
+    fill: none;
+    stroke: var(--viz-series-2);
+    stroke-width: 2;
+    opacity: 0;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-tokyo-halo.is-crossing { opacity: .9; }
+  #viewer-frame-production-study .vfs-ground-city {
+    fill: color-mix(in srgb, var(--foreground) 74%, transparent);
+    stroke: color-mix(in srgb, var(--foreground) 74%, transparent);
+    stroke-width: 1.7;
+    vector-effect: non-scaling-stroke;
+  }
+  #viewer-frame-production-study .vfs-ground-city text {
+    fill: var(--foreground);
+    stroke: none;
+    text-anchor: middle;
+    font-size: var(--font-size-base);
+    letter-spacing: .12em;
+  }
+  #viewer-frame-production-study .vfs-series,
+  #viewer-frame-production-study .vfs-sun-note,
+  #viewer-frame-production-study .vfs-telemetry text,
+  #viewer-frame-production-study .vfs-crossing text {
+    fill: var(--muted-foreground);
+    font-size: var(--font-size-base);
+    letter-spacing: .1em;
+  }
+  #viewer-frame-production-study .vfs-series { fill: var(--foreground); }
+  #viewer-frame-production-study .vfs-sun-note {
+    text-anchor: end;
+    opacity: 0;
+  }
+  #viewer-frame-production-study .vfs-telemetry { opacity: 0; }
+  #viewer-frame-production-study .vfs-crossing { opacity: 0; }
+  #viewer-frame-production-study .vfs-light-labels { opacity: 0; }
+  #viewer-frame-production-study .vfs-light-labels text {
+    fill: var(--muted-foreground);
+    font-size: var(--font-size-base);
+    letter-spacing: .1em;
+    text-anchor: middle;
+  }
+  #viewer-frame-production-study .vfs-crossing line {
+    stroke: var(--viz-series-2);
+    stroke-width: 1.4;
+  }
+  #viewer-frame-production-study .vfs-crossing text { fill: var(--foreground); }
+  #viewer-frame-production-study .vfs-copy {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 7%;
+  }
+  #viewer-frame-production-study .vfs-copy h2,
+  #viewer-frame-production-study .vfs-copy p { margin: 0; }
+  #viewer-frame-production-study .vfs-copy p {
+    margin-top: .5rem;
+    color: var(--muted-foreground);
+  }
+  #viewer-frame-production-study .viz-controls { width: min(100%, 36rem); }
+  #viewer-frame-production-study .form-range { flex: 1 1 14rem; }
+
+  @media (max-width: 440px) {
+    #viewer-frame-production-study .vfs-series { display: none; }
+    #viewer-frame-production-study .vfs-copy { left: 6%; right: 6%; bottom: 6%; }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("viewer-frame-production-study");
+  const captureMode = new URLSearchParams(location.search).has("capture");
+  const cameraWorld = root.querySelector("[data-camera-world]");
+  const space = root.querySelector("[data-space]");
+  const stars = root.querySelector("[data-stars]");
+  const sunNote = root.querySelector("[data-sun-note]");
+  const groundCity = root.querySelector("[data-ground-city]");
+  const night = root.querySelector("[data-night]");
+  const day = root.querySelector("[data-day]");
+  const terminator = root.querySelector("[data-terminator]");
+  const lightLabels = root.querySelector("[data-light-labels]");
+  const telemetry = root.querySelector("[data-telemetry]");
+  const crossingLabel = root.querySelector("[data-crossing]");
+  const graticulePath = root.querySelector("[data-graticule]");
+  const spherePath = root.querySelector("[data-sphere]");
+  const sphereLine = root.querySelector("[data-sphere-line]");
+  const sunRim = root.querySelector("[data-sun-rim]");
+  const tokyoDot = root.querySelector("[data-tokyo-dot]");
+  const tokyoHalo = root.querySelector("[data-tokyo-halo]");
+  const trailPath = root.querySelector("[data-trail]");
+  const copyBox = root.querySelector(".vfs-copy");
+  const mainCopy = root.querySelector("[data-main-copy]");
+  const subCopy = root.querySelector("[data-sub-copy]");
+  const replay = root.querySelector("[data-replay]");
+  const scrub = root.querySelector("[data-scrub]");
+  const timeLabel = root.querySelector("[data-time]");
+
+  const tokyo = [139.6917, 35.6895];
+  const duration = 17;
+  const audioPlan = Object.freeze([
+    Object.freeze({ kind: "dawn-bed", time: 0, duration: 3.2 }),
+    Object.freeze({ kind: "pullback-air", time: 3, duration: 4.75 }),
+    Object.freeze({ kind: "system-bed", time: 7.75, duration: 8.6 }),
+    Object.freeze({ kind: "rotational-pulse", time: 7.88, duration: 1.65, frequencies: [110, 220] }),
+    Object.freeze({ kind: "boundary-harmonic", time: 11.5, duration: .65, frequencies: [164.81, 247.22] }),
+    Object.freeze({ kind: "closing-bed", time: 13.2, duration: 3.15 }),
+    Object.freeze({ kind: "master-fade", time: 16.35, duration: .65 })
+  ]);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const radians = Math.PI / 180;
+  const sphereD = "M0,-254A254,254 0 1,1 0,254A254,254 0 1,1 0,-254Z";
+
+  let frameId = 0;
+  let startAt = 0;
+  let running = false;
+  let currentTime = 0;
+
+  function clamp(value, min = 0, max = 1) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function mix(a, b, p) {
+    return a + (b - a) * p;
+  }
+
+  function smooth(value) {
+    const p = clamp(value);
+    return p * p * (3 - 2 * p);
+  }
+
+  function projectPoint(coordinates, rotation) {
+    const longitude = (coordinates[0] + rotation.yaw) * radians;
+    const latitude = coordinates[1] * radians;
+    const pitch = rotation.pitch * radians;
+    const cosLatitude = Math.cos(latitude);
+    const sourceY = -Math.sin(latitude);
+    const sourceZ = cosLatitude * Math.cos(longitude);
+    const x = 254 * cosLatitude * Math.sin(longitude);
+    const y = 254 * (sourceY * Math.cos(pitch) - sourceZ * Math.sin(pitch));
+    const z = sourceY * Math.sin(pitch) + sourceZ * Math.cos(pitch);
+    return { point: [x, y], visible: z >= 0 };
+  }
+
+  function linePath(coordinates, rotation) {
+    let output = "";
+    let drawing = false;
+    for (const coordinate of coordinates) {
+      const projected = projectPoint(coordinate, rotation);
+      if (!projected.visible) {
+        drawing = false;
+        continue;
+      }
+      const [x, y] = projected.point;
+      output += `${drawing ? "L" : "M"}${x.toFixed(2)},${y.toFixed(2)}`;
+      drawing = true;
+    }
+    return output;
+  }
+
+  function graticuleAt(rotation) {
+    const paths = [];
+    for (let longitude = -180; longitude < 180; longitude += 15) {
+      const points = [];
+      for (let latitude = -88; latitude <= 88; latitude += 2) points.push([longitude, latitude]);
+      paths.push(linePath(points, rotation));
+    }
+    for (let latitude = -75; latitude <= 75; latitude += 15) {
+      const points = [];
+      for (let longitude = -180; longitude <= 180; longitude += 2) points.push([longitude, latitude]);
+      paths.push(linePath(points, rotation));
+    }
+    return paths.join("");
+  }
+
+  function dotPath(point, radius = 7) {
+    const [x, y] = point;
+    return `M${x.toFixed(2)},${y.toFixed(2)}m0,${radius}a${radius},${radius} 0 1,1 0,-${radius * 2}a${radius},${radius} 0 1,1 0,${radius * 2}z`;
+  }
+
+  function pullAt(t) {
+    return smooth((t - 3) / 4.75);
+  }
+
+  function cameraAt(t) {
+    const pull = pullAt(t);
+    const verticalPull = smooth((t - 4.1) / 3.65);
+    const groundLift = smooth(t / 3.2) * 26;
+    return {
+      x: mix(400, 292, pull),
+      y: mix(2174 + groundLift, 470, verticalPull),
+      scale: mix(6.97, .96, pull),
+      pull
+    };
+  }
+
+  function rotationAt(t) {
+    const pull = pullAt(t);
+    let yaw = mix(-139.6917, -185, pull);
+    if (t >= 8.05 && t <= 11.5) {
+      yaw = mix(-185, -139.6917, clamp((t - 8.05) / 3.45));
+    } else if (t > 11.5 && t < 12.5) {
+      yaw = mix(-139.6917, -126.56, clamp((t - 11.5) / 1));
+    } else if (t >= 12.5) {
+      yaw = mix(-126.56, -122.5, smooth((t - 12.5) / .8));
+    }
+    return {
+      yaw,
+      pitch: mix(54.3105, -8, pull)
+    };
+  }
+
+  function copyAt(t) {
+    if (t < 2.25) return ["The Sun rises.", "HUMAN VIEW · TOKYO"];
+    if (t < 3.55) return ["From here, that is true.", "HUMAN VIEW"];
+    if (t < 7.75) return ["", ""];
+    if (t < 10.5) return ["Tokyo rotates into daylight.", "SYSTEM VIEW · CAUSE · TIME COMPRESSED"];
+    if (t < 13.2) return ["Same event. Different frame.", "≈ 1,350 KM/H EASTWARD · TIME COMPRESSED"];
+    return ["Every interface chooses where the viewer stands.", ""];
+  }
+
+  function projectedTokyo(t) {
+    const rotation = rotationAt(t);
+    return projectPoint(tokyo, rotation);
+  }
+
+  function trailAt(t) {
+    if (t < 10.7 || t >= 13.2) return "";
+    const points = [];
+    const from = Math.max(10.7, t - 1.5);
+    for (let sample = from; sample <= t + .001; sample += .1) {
+      const state = projectedTokyo(sample);
+      if (state.visible) points.push(state.point);
+    }
+    if (points.length < 2) return "";
+    return points.map((point, index) => `${index ? "L" : "M"}${point[0].toFixed(1)},${point[1].toFixed(1)}`).join(" ");
+  }
+
+  function copyOpacityAt(t) {
+    const windows = [
+      [0, 2.25],
+      [2.25, 3.55],
+      [7.75, 10.5],
+      [10.5, 13.2],
+      [13.2, duration]
+    ];
+    const active = windows.find(([start, end]) => t >= start && t <= end);
+    if (!active) return 0;
+    const [start, end] = active;
+    const fadeIn = clamp((t - start) / .3);
+    const fadeOut = end === duration ? 1 : clamp((end - t) / .26);
+    return Math.min(fadeIn, fadeOut);
+  }
+
+  function render(value) {
+    const t = Math.max(0, Math.min(duration, value));
+    currentTime = t;
+    const camera = cameraAt(t);
+    const rotation = rotationAt(t);
+    cameraWorld.setAttribute("transform", `translate(${camera.x.toFixed(2)} ${camera.y.toFixed(2)}) scale(${camera.scale.toFixed(4)})`);
+    spherePath.setAttribute("d", sphereD);
+    sphereLine.setAttribute("d", sphereD);
+    graticulePath.setAttribute("d", graticuleAt(rotation));
+    graticulePath.style.opacity = String(clamp((camera.pull - .58) / .42));
+
+    const projected = projectPoint(tokyo, rotation);
+    const point = projected.point;
+    const visible = projected.visible;
+    const tokyoPath = visible ? dotPath(point) : "";
+    const cityOpacity = clamp((camera.pull - .06) / .46);
+    const isDay = visible && point[0] >= 0;
+    const crossing = visible && Math.abs(point[0]) < 19 && t > 10.5;
+
+    tokyoDot.setAttribute("d", tokyoPath);
+    tokyoDot.setAttribute("class", `vfs-tokyo-dot ${isDay ? "is-day" : ""}`);
+    tokyoDot.style.opacity = visible ? String(cityOpacity) : "0";
+    tokyoHalo.setAttribute("cx", point ? String(point[0]) : "0");
+    tokyoHalo.setAttribute("cy", point ? String(point[1]) : "0");
+    tokyoHalo.setAttribute("class", `vfs-tokyo-halo ${crossing ? "is-crossing" : ""}`);
+    trailPath.setAttribute("d", trailAt(t));
+    if (point) {
+      const screenX = camera.x + point[0] * camera.scale;
+      const screenY = camera.y + point[1] * camera.scale;
+      crossingLabel.setAttribute("transform", `translate(${screenX.toFixed(2)} ${screenY.toFixed(2)})`);
+    }
+
+    groundCity.style.opacity = String(1 - clamp(camera.pull / .55));
+    space.style.opacity = String(.78 * camera.pull);
+    stars.style.opacity = String(.42 * clamp((camera.pull - .35) / .65));
+    night.style.opacity = String(.5 * clamp((camera.pull - .42) / .58));
+    day.style.opacity = String(.98 * clamp((camera.pull - .42) / .58));
+    terminator.style.opacity = String(.9 * clamp((camera.pull - .62) / .38));
+    sunRim.style.opacity = String(.86 * clamp((camera.pull - .5) / .5));
+    lightLabels.style.opacity = String(clamp((t - 7.75) / .45) * clamp((13.25 - t) / .65));
+    sunNote.style.opacity = String(t >= 3.55 && t < 7.8 ? clamp((t - 3.55) / .45) * clamp((7.8 - t) / .45) : 0);
+    telemetry.style.opacity = String(clamp((t - 7.75) / .5) * clamp((13.2 - t) / .7));
+    crossingLabel.style.opacity = String(crossing ? 1 : 0);
+
+    const [headline, subline] = copyAt(t);
+    mainCopy.textContent = headline;
+    subCopy.textContent = subline;
+    copyBox.style.opacity = String(copyOpacityAt(t));
+    scrub.value = String(t);
+    timeLabel.textContent = `${t.toFixed(1)} s`;
+  }
+
+  function tick(now) {
+    if (!running) return;
+    const elapsed = (now - startAt) / 1000;
+    render(elapsed);
+    if (elapsed < duration) frameId = requestAnimationFrame(tick);
+    else {
+      running = false;
+      replay.textContent = "Replay 17 seconds";
+    }
+  }
+
+  function play() {
+    cancelAnimationFrame(frameId);
+    running = true;
+    startAt = performance.now();
+    replay.textContent = "Restart";
+    render(0);
+    frameId = requestAnimationFrame(tick);
+  }
+
+  function renderAt(seconds) {
+    cancelAnimationFrame(frameId);
+    running = false;
+    render(seconds);
+    replay.textContent = "Replay 17 seconds";
+    return state();
+  }
+
+  function stop() {
+    cancelAnimationFrame(frameId);
+    running = false;
+    replay.textContent = currentTime >= duration ? "Replay 17 seconds" : "Resume";
+    return state();
+  }
+
+  function state() {
+    return {
+      time: currentTime,
+      duration,
+      cameraTransform: cameraWorld.getAttribute("transform"),
+      sun: { x: 705, y: 456 },
+      tokyoDaylight: tokyoDot.classList.contains("is-day"),
+      headline: mainCopy.textContent,
+      captureMode
+    };
+  }
+
+  replay.addEventListener("click", play);
+  scrub.addEventListener("input", () => renderAt(Number(scrub.value)));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLButtonElement) return;
+    if (event.key.toLowerCase() === "r") play();
+    if (event.code === "Space") {
+      event.preventDefault();
+      if (running) stop();
+      else play();
+    }
+  });
+
+  window.studioInterlude = Object.freeze({
+    renderAt,
+    duration: () => duration,
+    state,
+    audioEvents: () => audioPlan.map(event => ({ ...event, frequencies: event.frequencies ? [...event.frequencies] : undefined })),
+    play,
+    stop,
+    replay: play
+  });
+
+  if (captureMode) renderAt(0);
+  else if (reduceMotion) renderAt(15.5);
+  else play();
+</script>
+
+</body>
+</html>
